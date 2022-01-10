@@ -18,6 +18,7 @@
   flex-direction: column;
   min-height: 100vh;
 }
+
 .main {
   flex-grow: 1;
   /* height: 500px; */
@@ -90,7 +91,7 @@ footer {
   height: 80%;
   width: 100%;
   object-fit: cover;
-  transition: transform var(--animation-duration) var(--timing-function);
+  transition: transform 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .gallery__link {
@@ -101,4 +102,13 @@ footer {
 
 .gallery__link:hover {
   cursor: zoom-in;
+}
+.load-more {
+  opacity: 0;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 5px;
+}
+.opasity {
+  opacity: 1;
+  transition-duration: 500ms;
 }

@@ -2,6 +2,7 @@ export class SendImg {
   constructor() {
     this.send = '';
     this.numberPages = 1;
+    this.pages = 40;
   }
   async fetchImg(send, numberPages) {
     const meta = new URLSearchParams({
@@ -11,7 +12,7 @@ export class SendImg {
       safesearch: true,
       image_type: 'photo',
       page: this.numberPages,
-      per_page: 4,
+      per_page: this.pages,
     });
     const url = `https://pixabay.com/api/?${meta}`;
     const res = await fetch(url);
