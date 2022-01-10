@@ -1,10 +1,11 @@
 import './css/styles.css';
 import axios from 'axios';
-import Notiflix from 'notiflix';
+// import Notiflix from 'notiflix';
 import { SendImg } from './js/classOOP';
-// import simpleLightbox from 'simplelightbox';
-// import 'simplelightbox/dist/simple-lightbox.min.css';
+import simpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import { htmlImg } from './js/htmlRender';
+import Notiflix from 'notiflix';
 
 const render = document.querySelector('#render');
 const more = document.querySelector('.load-more');
@@ -24,20 +25,30 @@ async function onFetchForm(e) {
     sendImg.metodSend = valueInput;
     try {
       arrImg = await sendImg.fetchImg(sendImg.metodSend, sendImg.numberPages);
+      addImg(arrImg);
+      if (arrImg.totalHits === 0) {
+        Notiflix.Notify.warning(`Hooray! We found ${arrImg.totalHits} images.`);
+      } else {
+        Notiflix.Notify.success(`Hooray! We found ${arrImg.totalHits} images.`);
+      }
     } catch {
-      Notiflix.Notify.error();
-      `Error fetch`;
+      Notiflix.Notify.error('Error catch');
     }
-
-    addImg(arrImg);
 
     more.addEventListener('click', onMoreClick);
     async function onMoreClick() {
-      console.log(sendImg.numberPages);
       sendImg.nextPages();
-      console.log(sendImg.numberPages);
-      let arrImg = await sendImg.fetchImg(sendImg.metodSend, sendImg.numberPages);
-      render.insertAdjacentHTML('beforeend', htmlImg(arrImg.hits).join(''));
+      try {
+        arrImg = await sendImg.fetchImg(sendImg.metodSend, sendImg.numberPages);
+        addImg(arrImg);
+        if (arrImg.totalHits === 0) {
+          Notiflix.Notify.warning(`Hooray! We found ${arrImg.totalHits} images.`);
+        } else {
+          Notiflix.Notify.success(`Hooray! We found ${arrImg.totalHits} images.`);
+        }
+      } catch {
+        Notiflix.Notify.error('Error catch');
+      }
     }
   }
   //   // clientMessage(send, sendImg.numberPages);
@@ -45,11 +56,18 @@ async function onFetchForm(e) {
 
 function addImg(arrImg) {
   render.insertAdjacentHTML('beforeend', htmlImg(arrImg.hits).join(''));
+  let gallerySet = new SimpleLightbox('.gallery a', {
+    captionPosition: 'bottom',
+    captionDelay: 250,
+  });
+
+  gallerySet.on('show.simplelightbox', function () {});
 }
 function remove(Element) {
   Element.innerHTML = '';
 }
 // **************************************************
+
 // function clientMessage() {
 //   sendImg
 //     .fethcImg(this.send, this.numberPages)
